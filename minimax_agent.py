@@ -4,7 +4,7 @@ from timeit import default_timer as timer
 
 from agent import Agent
 from board import get_valid_locations, is_terminal_node, winning_move, get_next_open_row, drop_piece
-from core import PLAYER_PIECE, AI_PIECE, COLUMN_COUNT, ROW_COUNT
+from core import HUMAN_PIECE, AI_PIECE, COLUMN_COUNT, ROW_COUNT
 
 EMPTY = 0
 WINDOW_LENGTH = 4
@@ -17,8 +17,8 @@ class MiniMaxAgent(Agent):
 
     def evaluate_window(self, window, piece):
         score = 0
-        opp_piece = PLAYER_PIECE
-        if piece == PLAYER_PIECE:
+        opp_piece = HUMAN_PIECE
+        if piece == HUMAN_PIECE:
             opp_piece = AI_PIECE
     
         if window.count(piece) == 4:
@@ -85,7 +85,7 @@ class MiniMaxAgent(Agent):
             if is_terminal:
                 if winning_move(board, AI_PIECE):
                     return (None, 100000000000000)
-                elif winning_move(board, PLAYER_PIECE):
+                elif winning_move(board, HUMAN_PIECE):
                     return (None, -10000000000000)
                 else:  # Game is over, no more valid moves
                     return (None, 0)
@@ -113,7 +113,7 @@ class MiniMaxAgent(Agent):
             for col in valid_locations:
                 row = get_next_open_row(board, col)
                 b_copy = board.copy()
-                drop_piece(b_copy, row, col, PLAYER_PIECE)
+                drop_piece(b_copy, row, col, HUMAN_PIECE)
                 new_score = self.minimax(b_copy, depth - 1, alpha, beta, True)[1]
                 if new_score < value:
                     value = new_score

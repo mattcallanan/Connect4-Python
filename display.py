@@ -2,7 +2,7 @@ import math
 
 import pygame
 
-from core import ROW_COUNT, COLUMN_COUNT, PLAYER_PIECE, AI_PIECE
+from core import ROW_COUNT, COLUMN_COUNT, HUMAN_PIECE, AI_PIECE
 
 BLUE = (0, 0, 255)
 BLACK = (0, 0, 0)
@@ -30,7 +30,7 @@ class Display:
 
         for c in range(COLUMN_COUNT):
             for r in range(ROW_COUNT):
-                if board[r][c] == PLAYER_PIECE:
+                if board[r][c] == HUMAN_PIECE:
                     pygame.draw.circle(self.screen, RED, (
                     int(c * SQUARESIZE + SQUARESIZE / 2), height - int(r * SQUARESIZE + SQUARESIZE / 2)), RADIUS)
                 elif board[r][c] == AI_PIECE:

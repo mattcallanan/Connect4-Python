@@ -4,7 +4,7 @@ import sys
 import pygame
 
 from board import create_board, print_board, is_valid_location, get_next_open_row, drop_piece, winning_move
-from core import PLAYER_PIECE, AI_PIECE
+from core import HUMAN_PIECE, AI_PIECE
 from display import Display, RED, YELLOW
 
 HUMAN = 0
@@ -61,26 +61,28 @@ class GameEngine:
             self.display.show_message(f"{PLAYER_NAMES[self.turn]} Player wins!!", PIECES[self.turn])
             pygame.time.wait(3000)
 
+    # Extract common elements from next 2 methods.  Delineate human turn a bit better
 
     def play_human_turn(self, event):
         column_to_play = self.display.column_under_mouse(event.pos[0])
         if is_valid_location(self.board, column_to_play):
             row = get_next_open_row(self.board, column_to_play)
-            drop_piece(self.board, row, column_to_play, PLAYER_PIECE)
+            drop_piece(self.board, row, column_to_play, HUMAN_PIECE)
             pygame.display.update()
-
-            four_in_a_row = winning_move(self.board, PLAYER_PIECE)
-            if four_in_a_row:
-                print("Human (Player 1) has won")
-                return True
 
             print_board(self.board)
             self.display.draw_board(self.board)
 
-            self.toggle_player()
+            four_in_a_row = winning_move(self.board, HUMAN_PIECE)
+            if four_in_a_row:
+                print(f"{PLAYER_NAMES[HUMAN]} ({PIECES[HUMAN]} Player) has won")
+                return True
+            else:
+                self.toggle_player()
         else:
             print(f"Ignoring invalid column {column_to_play}")
         return False
+
 
     def play_ai_turn(self):
         column_to_play = self.agent.play_turn(self.board)
@@ -89,13 +91,13 @@ class GameEngine:
             drop_piece(self.board, row, column_to_play, AI_PIECE)
             pygame.display.update()
 
-            four_in_a_row = winning_move(self.board, AI_PIECE)
-            if four_in_a_row:
-                print("AI (Player 2) has won")
-                return True
-
             print_board(self.board)
             self.display.draw_board(self.board)
 
-            self.toggle_player()
+            four_in_a_row = winning_move(self.board, AI_PIECE)
+            if four_in_a_row:
+                print(f"{PLAYER_NAMES[AI]} ({PIECES[AI]} Player) has won")
+                return True
+            else:
+                self.toggle_player()
         return False

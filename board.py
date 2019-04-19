@@ -1,6 +1,6 @@
 import numpy as np
 
-from core import ROW_COUNT, COLUMN_COUNT, PLAYER_PIECE, AI_PIECE
+from core import ROW_COUNT, COLUMN_COUNT, HUMAN_PIECE, AI_PIECE
 
 
 def create_board():
@@ -59,7 +59,7 @@ def winning_move(board, piece):
 
 
 def is_terminal_node(board):
-    return winning_move(board, PLAYER_PIECE) or winning_move(board, AI_PIECE) or len(get_valid_locations(board)) == 0
+    return winning_move(board, HUMAN_PIECE) or winning_move(board, AI_PIECE) or len(get_valid_locations(board)) == 0
 
 
 def get_valid_locations(board):
