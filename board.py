@@ -29,6 +29,7 @@ def get_next_open_row(board, col):
     raise Exception(f"Column {col} is full. Please use is_valid_location() first")
 
 
+# TODO: Identify all tokens connected by winning move (not just first four found)
 def winning_move(board, piece_id):
     # Check horizontal locations for win
     for c in range(COLUMN_COUNT - 3):

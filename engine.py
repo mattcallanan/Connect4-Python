@@ -1,12 +1,10 @@
-import random
 import sys
 from timeit import default_timer as timer
 
 import pygame
 
-from board import create_board, print_board, is_valid_location, get_next_open_row, drop_piece, winning_move
+from board import create_board, print_board, is_valid_location, drop_piece, winning_move
 from display import Display
-
 
 
 class GameEngine:
@@ -18,28 +16,22 @@ class GameEngine:
         self.player2 = None
         self.board = create_board()
         print_board(self.board)
+        self.clock = pygame.time.Clock()
 
     def init_display(self):
-        start = timer()
         pygame.init()
         pygame.display.set_caption("Connect 4")
         self.display = Display(self.player1_colour, self.player2_colour)
         self.display.draw_board(self.board)
-        elapsed = timer() - start
-        print(f"init_display took {elapsed}s")
 
     def start_game(self, player1, player2):
         self.player1 = player1
         self.player2 = player2
-        self.current_player = self.choose_first_player()
+        self.current_player = self.player1
         print(f"Player 1 is {player1}")
         print(f"Player 2 is {player2}")
 
-    def choose_first_player(self):
-        player = random.sample([self.player1, self.player2], 1)[0]
-        print(f"'{player.name}' wins the toss and will go first.")
-        return player
-
+    # TODO: Don't start loop until ready
     def main_loop(self):
         game_over = False
 
@@ -50,12 +42,14 @@ class GameEngine:
             self.display.capture_screen(self.board)
             pygame.display.flip()
             # pygame.time.wait(1000)
-            if not game_over: self.toggle_player()
+            if not game_over:
+                self.toggle_player()
+            # self.clock.tick(1)
 
         if game_over:
-            self.display.show_message(f"{self.current_player.name} ({self.current_player.colour_name}) wins!!",
-                                      self.current_player.colour_rgb)
+            self.display.draw_winner(self.current_player.piece_id)
             pygame.display.flip()
+
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
