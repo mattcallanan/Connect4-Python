@@ -8,19 +8,25 @@ from board import create_board, print_board, is_valid_location, get_next_open_ro
 from display import Display
 
 
+
 class GameEngine:
 
     def __init__(self, player1_colour, player2_colour):
         self.player1_colour = player1_colour
         self.player2_colour = player2_colour
-        self.board = create_board()
-        print_board(self.board)
-        pygame.init()
-        self.display = Display(player1_colour, player2_colour)
-        self.display.draw_board(self.board)
-        pygame.display.update()
         self.player1 = None
         self.player2 = None
+        self.board = create_board()
+        print_board(self.board)
+
+    def init_display(self):
+        start = timer()
+        pygame.init()
+        pygame.display.set_caption("Connect 4")
+        self.display = Display(self.player1_colour, self.player2_colour)
+        self.display.draw_board(self.board)
+        elapsed = timer() - start
+        print(f"init_display took {elapsed}s")
 
     def start_game(self, player1, player2):
         self.player1 = player1
@@ -41,15 +47,18 @@ class GameEngine:
             column_to_play, elapsed = self.get_timed_move()
             print(f"{self.current_player.name}'s turn took {elapsed}s")
             game_over = self.draw_move_and_check_win(column_to_play, self.current_player)
+            self.display.capture_screen(self.board)
+            pygame.display.flip()
             # pygame.time.wait(1000)
             if not game_over: self.toggle_player()
 
         if game_over:
             self.display.show_message(f"{self.current_player.name} ({self.current_player.colour_name}) wins!!",
                                       self.current_player.colour_rgb)
+            pygame.display.flip()
         while True:
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
+                if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                     sys.exit()
 
     def get_timed_move(self):
@@ -61,13 +70,11 @@ class GameEngine:
     def draw_move_and_check_win(self, column_to_play, player):
         game_over = False
         if is_valid_location(self.board, column_to_play):
-            row = get_next_open_row(self.board, column_to_play)
-            drop_piece(self.board, row, column_to_play, player.piece_id)
+            drop_piece(self.board, column_to_play, player.piece_id)
 
             print_board(self.board)
-            self.display.draw_board(self.board)
-
             four_in_a_row = winning_move(self.board, player.piece_id)
+            self.display.draw_board(self.board, four_in_a_row)
             if four_in_a_row:
                 print(f"{player.name} ({player.colour_name}) has won!")
                 game_over = True
