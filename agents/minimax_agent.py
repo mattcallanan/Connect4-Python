@@ -1,8 +1,7 @@
 import math
 import random
-from timeit import default_timer as timer
 
-from agent import Agent
+from agents.agent import Agent
 from board import get_valid_locations, is_terminal_node, winning_move, get_next_open_row, drop_piece
 from core import PLAYER1_ID, PLAYER2_ID, COLUMN_COUNT, ROW_COUNT
 

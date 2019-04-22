@@ -1,6 +1,6 @@
 import random
 
-from agent import Agent
+from agents.agent import Agent
 from board import get_valid_locations
 
 

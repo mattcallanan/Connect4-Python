@@ -2,11 +2,11 @@ import math
 
 from display import YELLOW, RED
 from engine import GameEngine
-from human_agent import HumanAgent
-from minimax_agent import MiniMaxAgent
+from agents.human_agent import HumanAgent
+from agents.minimax_agent import MiniMaxAgent
+from agents.random_agent import RandomAgent
 from player1 import Player1
 from player2 import Player2
-from random_agent import RandomAgent
 
 
 if __name__ == "__main__":

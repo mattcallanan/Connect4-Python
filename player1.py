@@ -1,4 +1,4 @@
-from agent import Agent
+from agents.agent import Agent
 from core import PLAYER1_ID
 from display import YELLOW
 from player import Player

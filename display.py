@@ -2,7 +2,7 @@ import math
 
 import pygame
 import pygame.gfxdraw
-
+from pathlib import Path
 from board import moves_played
 from core import ROW_COUNT, COLUMN_COUNT, PLAYER1_ID, PLAYER2_ID
 
@@ -121,5 +121,5 @@ class Display:
 
     def capture_screen(self, board):
         filename = f"{moves_played(board)}.jpg"
-        pygame.image.save(self.screen, filename)
+        pygame.image.save(self.screen, Path("screenshots", filename))
         print(f"Captured screenshot to {filename}")

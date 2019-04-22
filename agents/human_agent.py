@@ -2,7 +2,7 @@ import sys
 
 import pygame
 
-from agent import Agent
+from agents.agent import Agent
 
 
 class HumanAgent(Agent):
@@ -13,8 +13,8 @@ class HumanAgent(Agent):
         self.display = params['display']
         self.params = params
 
-    def get_move(self, board):
-        self.throw_away_old_events()
+    def get_move(self, board: object):
+        self.__throw_away_old_events()
         while True:
             for event in pygame.event.get():
                 # if event.type == pygame.QUIT: # or (event.type == pygame.KEYUP and event.key == 113 and event.mod == 1024):
@@ -28,5 +28,5 @@ class HumanAgent(Agent):
                 else:
                     print(f"- Ignoring event: {event}")
 
-    def throw_away_old_events(self):
+    def __throw_away_old_events(self):
         pygame.event.get()
